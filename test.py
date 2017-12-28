@@ -1,31 +1,36 @@
 import os
 import time
-
+import random
+ 
 FILES_FOLDER = 'files/'
-ITERATIONS = 50000
+ITERATIONS = 100000
 LINES = 1000
-
-def write_file(index):
-	with open(FILES_FOLDER + 'file{}.txt'.format(index), 'w') as f:
-		for i in range(0, LINES):
-			f.write('I am the test file!')
-
-def read_file(index):
-	with open(FILES_FOLDER + 'file{}.txt'.format(index), 'r') as f:
-		f.read()
-
-def delete_file(index):
-	os.remove(FILES_FOLDER + 'file{}.txt'.format(index))
-
-
+ 
+SIZE = 100*1024*1024
+ 
+ 
+def init_file():
+        with open(FILES_FOLDER + 'file.txt', 'w') as f:
+                f.write("x"*SIZE)
+               
+def write_file():
+        with open(FILES_FOLDER + 'file.txt', 'w') as f:
+                offset = random.randint(0, SIZE-10)
+                f.seek(offset, 0)
+                f.write('qwert')
+ 
+def read_file():
+        with open(FILES_FOLDER + 'file.txt', 'r') as f:
+                offset = random.randint(0, SIZE-10)
+                f.seek(offset, 0)
+                f.read(5)
+ 
 def test():
-	start = time.time()
-	for i in range(0, ITERATIONS):
-		write_file(i)
-		read_file(i)
-		delete_file(i)
-
-	print('Process time: {} seconds'.format(time.time() - start))
-
-
+        start = time.time()
+        init_file()
+        for i in range(0, ITERATIONS):
+                write_file()
+                read_file()
+        print('Process time: {} seconds'.format(time.time() - start))
+ 
 test()
